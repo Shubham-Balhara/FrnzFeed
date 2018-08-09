@@ -1,0 +1,12 @@
+{% extends 'feed/base.html' %}
+{% if cmt == 'add-profile' %}
+{% block navbar %}
+{% endblock %}
+{% endif %}
+
+{% block content %}
+<div class="jumbotron">
+	<h3>Hello, {{ user.username }}. You have successfully logged in.</h3>
+	<a href="{% url 'add-profile' user.id %}" class="btn btn-info">Edit your profile</a>
+</div>
+{% endblock %}

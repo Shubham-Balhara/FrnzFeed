@@ -1,0 +1,36 @@
+{% extends 'feed/base.html' %}
+
+{% block content %}
+
+<div class="container">
+	{% for post in post_list %}
+		{% if post.user.username in friend_list %}
+		<div class="row">
+			<div class="col-sm-3"></div>
+			<div class="col-sm-8 col-lg-6">
+                    <div class="thumbnail">
+                        <a href="{% url 'show_post' post.id %}">
+                            <div style="height: 200px">
+                                <center><img src="{{ post.pic.url }}" class="img-responsive" style="height: 190px"></center>
+                                <hr>
+                            </div>
+                        </a>
+                        <div class="caption">
+                            <h2><b>{{ post.user.username }}</b></h2>
+                            <h5 style="color:#595959">&emsp; {{ post.quote }}</h5>
+                        </div>
+                            <a href="{% url 'like-yes' post.id %}?next={{ request.path }}" class="btn btn-warning">
+                                <span class="glyphicon glyphicon-heart"></span>&emsp; {{ post.likes }}
+                            </a><br><br>
+                            <form method="post" action="{% url 'add_comment' post.id %}">
+								{% csrf_token %}
+								<input type="text" name="comment" id="comment" placeholder="Add comment ...">
+								<input type="submit" name="ok_cmnt">
+							</form>
+                    </div>
+                </div>
+		</div>
+		{% endif %}
+	{% endfor %}
+</div>
+{% endblock %}

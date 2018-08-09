@@ -1,0 +1,62 @@
+{% extends 'feed/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <!-- Left Album Info -->
+        <div class="col-sm-6 col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{% url 'show_post' obj.id %}">
+                        {% if obj.pic %}
+                            <img src="{{ obj.pic.url }}" class="img-responsive">
+                        {% else %}
+                            <h3>No image to display</h3>
+                        {% endif %}
+                    </a>
+                    <h1>{{ obj.user.username }}</h1>
+                    <h4 style="color: #4d4d4d">{{ obj.quote }}</h4>
+                    <a href="{% url 'like-yes' obj.id %}?next={{ request.path }}" class="btn btn-warning col-lg-3"><span class="glyphicon glyphicon-heart"></span>&emsp; {{ obj.likes }}</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Song Info -->
+        <div class="col-sm-6 col-md-8">
+
+        	<div class="jumbotron">
+        		<form method="post" action="{% url 'add_comment' obj.id %}">
+						{% csrf_token %}
+						<input type="text" name="comment" id="comment" placeholder="Add comment ..." style="padding: 10px;border-radius: 10px;width: 80%;margin-right: 10px">
+						<input type="submit" name="ok_cmnt" value="comment" class="btn btn-bg btn-success">
+					</form>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h3>Comments :</h3>
+                    <hr>
+                    {% for comment in obj.comments_set.all %}
+						<div class="row">
+							<div class="col-sm-3">
+								<h4>{{comment.user}}</h4>
+							</div>
+							<div class="col-sm-8 col-lg-6">
+				            	<h5>{{ comment.comment }}</h5>	       
+				            </div>
+				            </div>
+						</div>
+					{% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

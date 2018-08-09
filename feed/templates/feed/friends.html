@@ -1,0 +1,43 @@
+{% extends 'feed/base.html' %}
+
+{% block content %}
+<!--	<ul>
+		{% for friend in friends %}
+			<li><a href="{% url 'f-profile' friend.name %}">{{ friend.name }}</a><br>
+			<a href="{% url 'remove-yes' friend.name %}" class="btn btn-success">Remove</a></li>
+		{% endfor %}
+		<h3>suggested: </h3>
+		{% for friend in users %}
+		{% if not friend == request.user and not friend.username == 'admin' and not friend.username in friend_list %}
+			<li><a href="{% url 'f-profile' friend.username %}">{{ friend.username }}</a><br>
+				<a href="{% url 'sent-friend' friend.id %}" class="btn btn-info">Follow</a>
+			</li>
+		{% endif %}
+		{% endfor %}
+	</ul>-->
+	<div class="row"><div class="col-md-1"></div>
+	<div class="col-md-5">
+		<ul class="list-group">
+			<h3>Friends List: </h3>
+			{% for friend in friends %}
+				<li class="list-group-item list-group-item-success"><strong><a href="{% url 'f-profile' friend.name %}">{{ friend.name }}</a></strong>
+			<a href="{% url 'remove-yes' friend.name %}" class="btn btn-sm btn-danger" style="float: right;margin-left: 10px;">Remove</a>
+			<a href="{% url 'chatroom' friend.name %}" class="btn btn-sm btn-success" style="float: right;">Chat</a>
+		</li>
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="col-md-5">
+		<ul class="list-group">
+			<h3>Suggested Friends: </h3>
+			{% for friend in users %}
+			{% if not friend == request.user and not friend.username == 'admin' and not friend.username in friend_list %}
+				<li class="list-group-item list-group-item-info"><strong><a href="{% url 'f-profile' friend.username %}">{{ friend.username }}</a></strong>
+					<small><a href="{% url 'sent-friend' friend.id %}" class="btn btn-sm btn-success" style="float: right;">Follow</a></small>
+				</li>
+			{% endif %}
+			{% endfor %}
+		</ul>
+	</div><div class="col-md-1"></div>
+</div>
+{% endblock %}

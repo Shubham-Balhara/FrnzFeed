@@ -1,0 +1,77 @@
+{% extends 'feed/base.html' %}
+
+{% block style %}
+.blue_box, .green_box {
+    display: block;
+    clear:both;
+}
+.blue_box span {
+    background-color: blue;
+    color: white;
+    padding: 10px 5px;
+    display: block;
+    float: right;
+    border-radius:10px;
+}
+.green_box span {
+    background-color: green;
+    color: white;
+    padding: 10px 5px;
+    display: block;
+    float: left;
+    border-radius:10px;
+}
+{% endblock %}
+
+{% block content %}
+	<center><h2>{{receiver}}</h2></center>
+	<center><hr style="width: 50%"></center>
+	<div style="height: 400px;margin: 20px;padding: 20px;width: 70%;overflow: scroll;margin-left: 50px;" id="disp_msg">
+        {% for msg in msgs %}
+            {% if msg.to == receiver %}
+                <div class="blue_box"><span>{{msg.message}}</span></div> 
+            {% else %}
+                <div class="green_box"><span>{{msg.message}}</span></div>
+            {% endif %}
+        {% endfor %}
+	</div>
+	<input type="text" name="msg" id="msg" style="width: 70%;margin-left: 50px" placeholder="message..."><br>
+	<button class="btn btn-success" onclick="fun(this)" value={{receiver}} style="margin-left: 50px">Send</button>
+{% endblock %}
+
+{% block script %}
+	var roomName = {{ name_json }};
+
+    var chatSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/' + roomName + '/');
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    chatSocket.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        var message = data['message'];
+        var sender = data['sender'];
+        if(sender==roomName){
+            document.getElementById('disp_msg').innerHTML = '<div class="blue_box"><span>'+ message +'</span></div>' + document.getElementById('disp_msg').innerHTML;
+        }
+        else{
+            document.getElementById('disp_msg').innerHTML = '<div class="green_box"><span>'+ message +'</span></div>' + 
+            document.getElementById('disp_msg').innerHTML;
+        }
+    };
+
+    function fun(x) {
+        message = document.getElementById('msg').value;
+        if(message!=''){
+        document.getElementById('msg').value = '';
+        chatSocket.send(JSON.stringify({
+            'value':0,
+            'receiver': x.value,
+            'message': message
+        }));
+    }   
+    }
+{% endblock %}

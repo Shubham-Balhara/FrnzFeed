@@ -1,0 +1,15 @@
+{% extends 'feed/base.html' %}
+
+{% block content %}
+<div>
+	{% if not obj %}
+	<h2>no notifications yet.</h2>
+	{% endif %}
+	{% for ids in obj %}
+	<div>
+		<h3>{{ ids.sender }}</h3>
+		<a href="{% url 'confirm-yes' ids.sender %}" class="btn btn-success">Confirm</a> <a href="{% url 'confirm-no' ids.sender %}" class="btn btn-danger">Delete</a>
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}

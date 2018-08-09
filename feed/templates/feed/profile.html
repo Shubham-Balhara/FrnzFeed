@@ -1,0 +1,75 @@
+{% extends 'feed/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <!-- Left Album Info -->
+        <div class="col-sm-6 col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{% url 'profile' user.id %}">
+                        {% if user.userprofile.photo %}
+                            <img src="{{ user.userprofile.photo.url }}" class="img-responsive">
+                        {% else %}
+                            <h3>No image to display</h3>
+                        {% endif %}
+                    </a>
+                    <h1>{{ user.username }}</h1>
+                    <h4 style="color: #4d4d4d">{{ user.userprofile.status }}</h4>
+                    <a href="{% url 'status' user.id %}" class="btn btn-success">Update Status</a>
+                    <a href="{% url 'update-profile' user.id %}" class="btn btn-warning">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Song Info -->
+        <div class="col-sm-6 col-md-8">
+
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" class="active"><a href="{% url 'add-post' %}">Add Post</a></li>
+            </ul>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h3>My Posts :</h3>
+                    <hr>
+                    {% for post in post_list %}
+						<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-8 col-lg-6">
+				                    <div class="thumbnail">
+				                        <a href="{% url 'show_post' post.id %}">
+				                            <div style="height: 200px">
+				                                <center><img src="{{ post.pic.url }}" class="img-responsive" style="height: 190px"></center>
+				                                <hr>
+				                            </div>
+				                        </a>
+				                        <div class="caption">
+				                            <h5 style="color:#595959">&emsp; {{ post.quote }}</h5>
+				                        </div>
+				                            <a href="{% url 'like-yes' post.id %}?next={{ request.path }}" class="btn btn-warning">
+				                                <span class="glyphicon glyphicon-heart"></span>&emsp; {{ post.likes }}
+				                            </a><br><br>
+				                            <form method="post" action="{% url 'add_comment' post.id %}">
+												{% csrf_token %}
+												<input type="text" name="comment" id="comment" placeholder="Add comment ...">
+												<input type="submit" name="ok_cmnt">
+											</form>
+				                    </div>
+				                </div>
+						</div>
+					{% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+	
+{% endblock %}

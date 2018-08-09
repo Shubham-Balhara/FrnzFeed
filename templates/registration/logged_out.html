@@ -1,0 +1,9 @@
+{% extends 'feed/base.html' %}
+
+{% block content %}
+<div class="jumbotron">
+	<center><h2><b>Logged out!</b></h2></center><hr>
+	<center><a href="{% url 'login' %}" class="btn btn-lg btn-default">Log In Again</a>
+	<a href="{% url 'index' %}"class="btn btn-lg btn-success" style="margin-left: 30px">Home</a></center>
+</div>
+{% endblock %}

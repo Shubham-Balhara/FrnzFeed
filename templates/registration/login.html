@@ -1,0 +1,49 @@
+{% extends 'feed/base.html' %}
+{% block title %}Log In{% endblock %}
+{% block content %}
+
+{% if form.errors %}
+<div class="jumbotron">
+	<h2>Your username and password didn't match.Please try again.</h2>
+</div>
+{% endif %}
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h2 style="margin-left: 80px"><b>Log In</b></h2><hr>
+                    <form class="form-horizontal" role="form" action="{% url 'login'%}" method="post" enctype="multipart/form-data">
+						{% csrf_token %}
+						<div class="form-group">
+                            <label class="control-label col-sm-2" for="id_username">
+                                {{ form.username.label_tag }}
+                            </label>
+                            <div class="col-sm-10">
+                                {{ form.username }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="id_username">
+                                {{ form.password.label_tag }}
+                            </label>
+                            <div class="col-sm-10">
+                                {{ form.password }}
+                            </div>
+                        </div>
+						<div>
+							<input type="submit" value="login" class="btn btn-success" style="margin-left: 160px">
+						</div><hr></h4><a href="{% url 'password_reset' %}" style="margin-left: 70px">Lost password ?</a>	
+					</form>
+                </div>
+                <div class="panel-footer">
+                    Don't have an account? <a href="{% url 'signup' %}">Click here</a> to register.
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
